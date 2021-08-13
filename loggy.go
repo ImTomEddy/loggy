@@ -2,7 +2,7 @@ package loggy
 
 type Opts struct {
 	LogLevel       LogLevel
-	DefaultFields  Fields
+	DefaultFields  map[string]interface{}
 	MessageField   string
 	LogLevelField  string
 	AutoTimestamp  bool
@@ -11,14 +11,12 @@ type Opts struct {
 
 type Loggy struct {
 	logLevel       LogLevel
-	defaultFields  Fields
+	defaultFields  map[string]interface{}
 	messageField   string
 	logLevelField  string
 	autoTimestamp  bool
 	timestampField string
 }
-
-type Fields map[string]interface{}
 
 func New(opts Opts) *Loggy {
 	msgField := opts.MessageField
@@ -46,10 +44,10 @@ func optOrDefaultStr(optVal string, defaultVal string) string {
 }
 
 func (l *Loggy) WithField(key string, val interface{}) *Log {
-	return l.WithFields(Fields{key: val})
+	return l.WithFields(map[string]interface{}{key: val})
 }
 
-func (l *Loggy) WithFields(fields Fields) *Log {
+func (l *Loggy) WithFields(fields map[string]interface{}) *Log {
 	return &Log{
 		loggy:  l,
 		fields: fields,
@@ -59,6 +57,6 @@ func (l *Loggy) WithFields(fields Fields) *Log {
 func (l *Loggy) Default() *Log {
 	return &Log{
 		loggy:  l,
-		fields: Fields{},
+		fields: map[string]interface{}{},
 	}
 }

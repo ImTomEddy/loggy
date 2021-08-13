@@ -8,7 +8,7 @@ func main() {
 	logger := loggy.New(loggy.Opts{
 		LogLevel:      loggy.LogLevelDebug,
 		AutoTimestamp: true,
-		DefaultFields: loggy.Fields{
+		DefaultFields: map[string]interface{}{
 			"a.default.field": "default",
 		},
 	})

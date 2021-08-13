@@ -9,7 +9,7 @@ import (
 
 type Log struct {
 	loggy  *Loggy
-	fields Fields
+	fields map[string]interface{}
 }
 
 func (l *Log) WithField(key string, val interface{}) *Log {
@@ -17,7 +17,7 @@ func (l *Log) WithField(key string, val interface{}) *Log {
 	return l
 }
 
-func (l *Log) WithFields(fields Fields) *Log {
+func (l *Log) WithFields(fields map[string]interface{}) *Log {
 	for key, val := range fields {
 		l.fields[key] = val
 	}
@@ -25,7 +25,7 @@ func (l *Log) WithFields(fields Fields) *Log {
 	return l
 }
 
-func (l *Log) GetFields() Fields {
+func (l *Log) GetFields() map[string]interface{} {
 	return l.fields
 }
 

@@ -46,7 +46,7 @@ func TestLogWithFields(t *testing.T) {
 	key := "key"
 	value := "value"
 
-	log.WithFields(loggy.Fields{
+	log.WithFields(map[string]interface{}{
 		key: value,
 	})
 
