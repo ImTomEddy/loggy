@@ -5,24 +5,40 @@ a json key using a `.` as a seperator to indicate a nested field.
 ## Example
 
 ```golang
-logger := loggy.NewLoggy(loggy.Options{
-  LogLevel:      loggy.LogLevelDebug,
-  AutoTimestamp: true,
-  DefaultFields: loggy.Fields{
-    "a.default.field": "default",
-  },
-})
+package main
 
-logger.
-  WithField("parent.child", "a value").
-  WithField("parent.second", "another value").
-  WithField("root", "a root field").
-  Log(loggy.LogLevelDebug, "Hello World")
+import (
+	"time"
+
+	"github.com/ImTomEddy/loggy"
+)
+
+func main() {
+	logger := loggy.New(loggy.Opts{
+		LogLevel: loggy.LogLevelDebug,
+		DefaultStaticFields: map[string]interface{}{
+			"a.default.field": "default",
+		},
+		DefaultVariableFields: map[string]func() interface{}{
+			"@timestamp": timestamp,
+		},
+	})
+
+	logger.
+		WithField("parent.child", "a value").
+		WithField("parent.second", "another value").
+		WithField("root", "a root field").
+		Log(loggy.LogLevelDebug, "Hello World")
+}
+
+func timestamp() interface{} {
+	return time.Now()
+}
 ```
 
 ```json
 {
-  "@timestamp": "2021-08-12T19:03:26.861871+01:00",
+  "@timestamp": "2021-08-13T19:05:54.126701+01:00",
   "a": {
     "default": {
       "field": "default"
