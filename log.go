@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 )
 
 type Log struct {
@@ -30,22 +29,24 @@ func (l *Log) GetFields() map[string]interface{} {
 }
 
 func (l *Log) Log(level LogLevel, message string, substitutes ...interface{}) {
-	if level < l.loggy.logLevel {
+	if level < l.loggy.Opts.getLogLevel() {
 		return
 	}
 
-	if l.loggy.defaultFields != nil {
-		for key, val := range l.loggy.defaultFields {
+	if l.loggy.Opts.getDefaultStaticFields() != nil {
+		for key, val := range l.loggy.Opts.getDefaultStaticFields() {
 			l.fields[key] = val
 		}
 	}
 
-	if l.loggy.autoTimestamp {
-		l.fields[l.loggy.timestampField] = time.Now()
+	if l.loggy.Opts.getDefaultVariableFields() != nil {
+		for key, fun := range l.loggy.Opts.getDefaultVariableFields() {
+			l.fields[key] = fun()
+		}
 	}
 
-	l.fields[l.loggy.logLevelField] = LogLevelToString(l.loggy.logLevel)
-	l.fields[l.loggy.messageField] = fmt.Sprintf(message, substitutes...)
+	l.fields[l.loggy.Opts.getLogLevelField()] = LogLevelToString(l.loggy.Opts.getLogLevel())
+	l.fields[l.loggy.Opts.getMessageField()] = fmt.Sprintf(message, substitutes...)
 	fmt.Println(l.buildJSONLog())
 }
 

@@ -7,18 +7,8 @@ import (
 )
 
 func TestNew(t *testing.T) {
-	t.Run("default options", func(t *testing.T) {
-		l := loggy.New(loggy.Opts{})
-		checkLoggy(t, l)
-	})
-
-	t.Run("custom options", func(t *testing.T) {
-		l := loggy.New(loggy.Opts{
-			TimeStampField: "time",
-		})
-		checkLoggy(t, l)
-	})
-
+	l := loggy.New(loggy.Opts{})
+	checkLoggy(t, l)
 }
 
 func TestLoggyWithField(t *testing.T) {

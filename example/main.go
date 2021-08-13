@@ -1,15 +1,19 @@
 package main
 
 import (
+	"time"
+
 	"github.com/ImTomEddy/loggy"
 )
 
 func main() {
 	logger := loggy.New(loggy.Opts{
-		LogLevel:      loggy.LogLevelDebug,
-		AutoTimestamp: true,
-		DefaultFields: map[string]interface{}{
+		LogLevel: loggy.LogLevelDebug,
+		DefaultStaticFields: map[string]interface{}{
 			"a.default.field": "default",
+		},
+		DefaultVariableFields: map[string]func() interface{}{
+			"@timestamp": timestamp,
 		},
 	})
 
@@ -18,4 +22,8 @@ func main() {
 		WithField("parent.second", "another value").
 		WithField("root", "a root field").
 		Log(loggy.LogLevelDebug, "Hello World")
+}
+
+func timestamp() interface{} {
+	return time.Now()
 }
