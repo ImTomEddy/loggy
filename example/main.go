@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	logger := loggy.NewLoggy(loggy.Options{
+	logger := loggy.New(loggy.Opts{
 		LogLevel:      loggy.LogLevelDebug,
 		AutoTimestamp: true,
 		DefaultFields: loggy.Fields{
